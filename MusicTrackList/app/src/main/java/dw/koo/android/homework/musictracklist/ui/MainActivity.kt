@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity(), IOnUiUpdateListener {
     private var mFragmentMap: FragmentMap? = null
     private var mBottomNavigationView: BottomNavigationView? = null
     private lateinit var mContext: Context
+    private var mModuleSet: ModuleSet? = null
 
     private inner class TrackContentObserver(handler: Handler?) : CustomContentObserver(handler) {
         override fun onChanged() {
@@ -99,14 +100,16 @@ class MainActivity : AppCompatActivity(), IOnUiUpdateListener {
 
         mContext = applicationContext
         mMsgHandle = MsgHandle()
-        ModuleSet.from(mContext)
+        mModuleSet = ModuleSet.from(mContext)
         mFragmentMap = FragmentMap()
 
         initFragment(FragmentType.MAIN_FRAGMENT)
         initBottomNavigation()
         initDatabase()
 
-        ModuleSet.get()!!.trackInfoLoader!!.setOnTrackResponseResult(mOnTrackResponseResultListener)
+        mModuleSet?.let {
+            it.trackInfoLoader.setOnTrackResponseResult(mOnTrackResponseResultListener)
+        }
         mMsgHandle!!.sendMessage(LocalApi.RequestTrack)
     }
 
@@ -125,9 +128,10 @@ class MainActivity : AppCompatActivity(), IOnUiUpdateListener {
     }
 
     private fun initDatabase() {
-        val trackDbHelper = ModuleSet.get()!!.trackDbHelper
-        trackDbHelper!!.setOnTrackDataChangeListener(mOnTrackDataChangeListener)
-        trackDbHelper.open()
+        mModuleSet?.let {
+            it.trackDbHelper.setOnTrackDataChangeListener(mOnTrackDataChangeListener)
+            it.trackDbHelper.open()
+        }
         mTrackContentObserver = TrackContentObserver(Handler())
     }
 
@@ -174,8 +178,7 @@ class MainActivity : AppCompatActivity(), IOnUiUpdateListener {
 
     override fun onDestroy() {
         mTrackContentObserver?.let { it!!.unregisterContentObserver(this) }
-        val trackDbHelper = ModuleSet.get()!!.trackDbHelper
-        trackDbHelper?.close()
+        mModuleSet?.let { it.trackDbHelper.close() }
         mMsgHandle?.let { mMsgHandle!!.quitHandlerLoopers() }
         super.onDestroy()
     }

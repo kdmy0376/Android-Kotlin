@@ -7,16 +7,12 @@ import dw.koo.android.homework.musictracklist.utils.DebugLog
 
 class ModuleSet private constructor(context: Context) {
     private val mContext: Context
-    var trackInfoLoader: TrackInfoLoader? = null
-    var trackDbHelper: TrackDbHelper? = null
+    val trackInfoLoader: TrackInfoLoader
+    val trackDbHelper: TrackDbHelper
 
     init {
         DebugLog.get()?.let { it.i(TAG, "ModuleSet") }
         mContext = context
-        init()
-    }
-
-    private fun init() {
         trackInfoLoader = TrackInfoLoader()
         trackDbHelper = TrackDbHelper(mContext)
     }

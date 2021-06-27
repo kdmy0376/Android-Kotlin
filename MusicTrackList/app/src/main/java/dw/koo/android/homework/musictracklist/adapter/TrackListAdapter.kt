@@ -51,7 +51,7 @@ class TrackListAdapter(
 
         val trackDbHelper = ModuleSet.get()!!.trackDbHelper
         holder.favoriteImageView.setImageResource(
-                if (trackDbHelper!!.hasMatchedTrack(trackData.trackId!!))
+                if (trackDbHelper.hasMatchedTrack(trackData.trackId!!))
                     R.drawable.btn_favorite_selected_n else R.drawable.btn_favorite_selected_f)
 
         val trackImgUri = Uri.parse(trackData.artworkUrl60)
@@ -76,7 +76,7 @@ class TrackListAdapter(
                 val clickedPosition = adapterPosition
                 if (clickedPosition != RecyclerView.NO_POSITION) {
                     val track = mTrackData!![clickedPosition]
-                    ModuleSet.get()!!.trackDbHelper!!.insertColumn(track)
+                    ModuleSet.get()!!.trackDbHelper.insertColumn(track)
                     DebugLog.get().d(TAG, "Temporary Log message, ViewHolder: $track")
                     mOnHolderListener.onHolderClicked(clickedPosition, itemView)
                 }

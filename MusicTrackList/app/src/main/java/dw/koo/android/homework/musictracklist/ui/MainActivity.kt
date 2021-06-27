@@ -19,12 +19,12 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity(), IOnUiUpdateListener {
-    private var mMsgHandle: MsgHandle? = null
     private var mTrackContentObserver: TrackContentObserver? = null
     private var mFragmentMap: FragmentMap? = null
     private var mBottomNavigationView: BottomNavigationView? = null
     private lateinit var mContext: Context
     private var mModuleSet: ModuleSet? = null
+    private val mMsgHandle: MsgHandle = MsgHandle()
 
     private inner class TrackContentObserver(handler: Handler?) : CustomContentObserver(handler) {
         override fun onChanged() {
@@ -99,7 +99,6 @@ class MainActivity : AppCompatActivity(), IOnUiUpdateListener {
         setContentView(R.layout.activity_main)
 
         mContext = applicationContext
-        mMsgHandle = MsgHandle()
         mModuleSet = ModuleSet.from(mContext)
         mFragmentMap = FragmentMap()
 
@@ -110,7 +109,7 @@ class MainActivity : AppCompatActivity(), IOnUiUpdateListener {
         mModuleSet?.let {
             it.trackInfoLoader.setOnTrackResponseResult(mOnTrackResponseResultListener)
         }
-        mMsgHandle!!.sendMessage(LocalApi.RequestTrack)
+        mMsgHandle.sendMessage(LocalApi.RequestTrack)
     }
 
     private fun initFragment(fragmentType: FragmentType) {
@@ -162,10 +161,10 @@ class MainActivity : AppCompatActivity(), IOnUiUpdateListener {
         DebugLog.get().d(TAG, "changeFragment: replace fragment")
         fragmentTransaction.replace(R.id.main_container, fragmentToBeChanged).commitAllowingStateLoss()
         if (fragmentToBeChanged.type == FragmentType.MAIN_FRAGMENT) {
-            mMsgHandle!!.sendMessage(LocalApi.RequestTrack)
+            mMsgHandle.sendMessage(LocalApi.RequestTrack)
 
         } else if (fragmentToBeChanged.type == FragmentType.FAVORITE_TRACK_LIST_FRAGMENT) {
-            mMsgHandle!!.sendMessage(LocalApi.LoadFavoriteTrackDb)
+            mMsgHandle.sendMessage(LocalApi.LoadFavoriteTrackDb)
         }
     }
 
@@ -179,7 +178,7 @@ class MainActivity : AppCompatActivity(), IOnUiUpdateListener {
     override fun onDestroy() {
         mTrackContentObserver?.let { it!!.unregisterContentObserver(this) }
         mModuleSet?.let { it.trackDbHelper.close() }
-        mMsgHandle?.let { mMsgHandle!!.quitHandlerLoopers() }
+        mMsgHandle.quitHandlerLoopers()
         super.onDestroy()
     }
 

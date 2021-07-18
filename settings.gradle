@@ -1,2 +1,4 @@
+include ':lottonumbergenerator'
+include ':base'
 include ':app'
 rootProject.name = "AidenKooSample"

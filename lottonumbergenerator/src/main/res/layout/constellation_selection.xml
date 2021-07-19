@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/goResultButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:text="Confirm Numbers" />
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner" />
+
+    <ImageView
+        android:id="@+id/constelaation_imageview"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/goResultButton"
+        android:layout_below="@+id/datePicker"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_launcher_background" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/constelaation_imageview"
+        android:layout_alignBottom="@+id/constelaation_imageview"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="32dp"
+        android:layout_toRightOf="@+id/constelaation_imageview"
+        android:autoSizeMaxTextSize="48sp"
+        android:autoSizeMinTextSize="24sp"
+        android:autoSizeStepGranularity="1sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="Yout Constellation"
+        android:textColor="@android:color/black" />
+
+</RelativeLayout>
